@@ -23,29 +23,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        const userDocRef = doc(db, 'users', firebaseUser.uid);
-        const userDoc = await getDoc(userDocRef);
-        
-        if (userDoc.exists()) {
-          setProfile(userDoc.data() as UserProfile);
+      try {
+        setUser(firebaseUser);
+        if (firebaseUser) {
+          const userDocRef = doc(db, 'users', firebaseUser.uid);
+          const userDoc = await getDoc(userDocRef);
+          
+          if (userDoc.exists()) {
+            setProfile(userDoc.data() as UserProfile);
+          } else {
+            const newProfile: UserProfile = {
+              uid: firebaseUser.uid,
+              displayName: firebaseUser.displayName || (firebaseUser.isAnonymous ? 'زائر' : 'مستخدم'),
+              email: firebaseUser.email || (firebaseUser.isAnonymous ? `${firebaseUser.uid}@anonymous.com` : null),
+              photoURL: firebaseUser.photoURL,
+              role: firebaseUser.email === 'mahmoudahmad01094@gmail.com' ? 'admin' : 'user',
+              createdAt: Timestamp.now(),
+            };
+            await setDoc(userDocRef, newProfile);
+            setProfile(newProfile);
+          }
         } else {
-          const newProfile: UserProfile = {
-            uid: firebaseUser.uid,
-            displayName: firebaseUser.displayName || (firebaseUser.isAnonymous ? 'زائر' : 'مستخدم'),
-            email: firebaseUser.email || (firebaseUser.isAnonymous ? `${firebaseUser.uid}@anonymous.com` : null),
-            photoURL: firebaseUser.photoURL,
-            role: firebaseUser.email === 'mahmoudahmad01094@gmail.com' ? 'admin' : 'user',
-            createdAt: Timestamp.now(),
-          };
-          await setDoc(userDocRef, newProfile);
-          setProfile(newProfile);
+          setProfile(null);
         }
-      } else {
-        setProfile(null);
+      } catch (error) {
+        console.error("Auth error:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();

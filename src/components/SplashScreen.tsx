@@ -13,7 +13,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(onFinish, 800); // Wait for exit animation
-    }, 3500);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [onFinish]);
