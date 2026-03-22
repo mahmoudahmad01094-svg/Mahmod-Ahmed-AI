@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-gemini-blue: #1a73e8;
+  --color-gemini-purple: #8e24aa;
+  --color-gemini-gradient-start: #4285f4;
+  --color-gemini-gradient-end: #9b72cb;
+  --color-gemini-dark-bg: #000000;
+  --color-gemini-dark-surface: #131314;
+  --color-gemini-dark-border: #282a2d;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white antialiased;
+  }
+  .prose {
+    @apply text-stone-300 leading-relaxed;
+  }
+  .prose h1 {
+    @apply text-3xl font-bold text-white mt-8 mb-4;
+  }
+  .prose h2 {
+    @apply text-2xl font-bold text-white mt-6 mb-3;
+  }
+  .prose h3 {
+    @apply text-xl font-bold text-white mt-4 mb-2;
+  }
+  .prose p {
+    @apply mb-4;
+  }
+  .prose ul {
+    @apply list-disc list-inside mb-4 space-y-1;
+  }
+  .prose ol {
+    @apply list-decimal list-inside mb-4 space-y-1;
+  }
+  .prose code {
+    @apply bg-stone-800 px-1.5 py-0.5 rounded text-sm font-mono text-emerald-400;
+  }
+  .prose pre {
+    @apply bg-stone-900 text-stone-100 p-4 rounded-xl overflow-x-auto mb-4 font-mono text-sm;
+  }
+  .prose blockquote {
+    @apply border-r-4 border-emerald-500 pr-4 italic text-stone-400 mb-4;
+  }
+  .prose a {
+    @apply text-emerald-400 hover:underline;
+  }
+}
+
+.gemini-gradient-text {
+  background: linear-gradient(to right, #4285f4, #9b72cb, #d96570);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gemini-pill {
+  @apply bg-[#1e1f20] border border-transparent hover:border-stone-700 px-4 py-2 rounded-full text-sm transition-all duration-200;
+}
+
+.gemini-input-container {
+  @apply bg-[#1e1f20] rounded-[2.5rem] px-6 py-4 flex items-center gap-4;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

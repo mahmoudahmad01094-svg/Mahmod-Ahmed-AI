@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Information about the authenticated user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the user." },
+        "displayName": { "type": "string", "description": "The user's display name." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "photoURL": { "type": "string", "format": "uri", "description": "The user's profile photo URL." },
+        "role": { "type": "string", "enum": ["admin", "user"], "description": "The user's role." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user account was created." }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Post": {
+      "title": "Blog Post",
+      "description": "A blog post created by a user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the post." },
+        "title": { "type": "string", "description": "The title of the post." },
+        "content": { "type": "string", "description": "The markdown content of the post." },
+        "authorId": { "type": "string", "description": "The UID of the author." },
+        "authorName": { "type": "string", "description": "The display name of the author." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the post was created." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the post was last updated." },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "Tags for the post." },
+        "isPublished": { "type": "boolean", "description": "Whether the post is published." }
+      },
+      "required": ["title", "content", "authorId", "createdAt"]
+    },
+    "ChatSession": {
+      "title": "Chat Session",
+      "description": "A chat session between a user and the AI.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the session." },
+        "userId": { "type": "string", "description": "The UID of the user." },
+        "title": { "type": "string", "description": "The title of the chat session." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the session was created." },
+        "lastMessageAt": { "type": "string", "format": "date-time", "description": "When the last message was sent." }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "A single message in a chat session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The unique ID of the message." },
+        "sessionId": { "type": "string", "description": "The ID of the parent session." },
+        "role": { "type": "string", "enum": ["user", "model"], "description": "The role of the sender." },
+        "content": { "type": "string", "description": "The text content of the message." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the message was sent." }
+      },
+      "required": ["sessionId", "role", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Blog post documents."
+    },
+    "/chats/{sessionId}": {
+      "schema": "ChatSession",
+      "description": "AI chat session documents."
+    },
+    "/chats/{sessionId}/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Messages within a chat session."
+    }
+  }
+}

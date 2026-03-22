@@ -1,0 +1,9 @@
+{
+  "name": "Mahmoud Ai",
+  "description": "مساعد ذكي متطور مدعوم بالذكاء الاصطناعي من تصميم م/محمود احمد.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
